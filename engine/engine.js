@@ -3,6 +3,7 @@ class GameEngine {
     this.ctx = null;
 
     this.entities = [];
+    this.bullets = [];
 
     // information about input
     this.click = false;
@@ -109,13 +110,21 @@ class GameEngine {
   draw() {
     this.ctx.clearRect(0, 0, this.ctx.canvas.width, this.ctx.canvas.height);
     for (let i = 0; i < this.entities.length; i++) {
-      this.entities[i].draw(this.ctx, this);
+      this.entities[i].draw(this.ctx);
+    }
+
+    // draw bullets
+    for (let i = 0; i < this.bullets.length; i++) {
+      this.bullets[i].draw(this.ctx);
     }
   }
 
   update() {
-    this.entities.forEach((entity) => entity.update(this));
+    this.entities.forEach((entity) => entity.update());
     this.entities = this.entities.filter((entity) => !entity.remove);
+
+    this.bullets.forEach((bullet) => bullet.update());
+    this.bullets = this.bullets.filter((bullet) => !bullet.remove);
   }
 
   loop() {

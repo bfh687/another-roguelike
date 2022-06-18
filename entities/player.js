@@ -2,6 +2,8 @@ class Player {
   constructor(x, y, width, height) {
     Object.assign(this, { x, y, width, height });
 
+    this.bb = new BoundingBox(x, y, width, height);
+
     // movement stats
     this.velocity = { x: 0, y: 0 };
     this.speed = 350;
@@ -9,14 +11,14 @@ class Player {
     // cooldowns
     {
       this.shot_cd = 0;
-      this.fire_rate = 1;
+      this.fire_rate = 0.33;
     }
 
     // gun info (temp for now)
     {
-      this.bullets = 2;
+      this.bullets = 32;
       this.reloading = false;
-      this.reload_time = 1;
+      this.reload_time = 0.5;
     }
 
     engine.player = this;
@@ -73,20 +75,20 @@ class Player {
 
     this.bullets--;
     if (this.bullets == 0) this.reloading = true;
-    engine.addEntity(new Bullet(-dir_x, -dir_y));
+    engine.bullets.push(new Bullet(-dir_x, -dir_y));
 
-    // add extra pellets ??
-    const angle = Math.atan2(-dir_y, -dir_x);
-    const a1 = angle + Math.PI / 16;
-    const a2 = angle - Math.PI / 16;
+    // // add extra pellets ??
+    // const angle = Math.atan2(-dir_y, -dir_x);
+    // const a1 = angle + Math.PI / 16;
+    // const a2 = angle - Math.PI / 16;
 
-    const v1_x = Math.cos(a1);
-    const v1_y = Math.sin(a1);
-    const v2_x = Math.cos(a2);
-    const v2_y = Math.sin(a2);
+    // const v1_x = Math.cos(a1);
+    // const v1_y = Math.sin(a1);
+    // const v2_x = Math.cos(a2);
+    // const v2_y = Math.sin(a2);
 
-    engine.addEntity(new Bullet(v1_x, v1_y));
-    engine.addEntity(new Bullet(v2_x, v2_y));
+    // engine.bullets.push(new Bullet(v1_x, v1_y));
+    // engine.bullets.push(new Bullet(v2_x, v2_y));
   }
 
   reload() {
@@ -96,7 +98,7 @@ class Player {
     this.reload_time -= engine.clockTick;
 
     if (this.reload_time <= 0) {
-      this.bullets = 2;
+      this.bullets = 32;
       this.reloading = false;
       this.reload_time = 1;
     }
@@ -113,21 +115,24 @@ class Player {
   }
 
   draw(ctx) {
-    ctx.fillStyle = "white";
-
     let temp_x;
     for (temp_x = Math.floor(this.x); temp_x % 50 != 0; temp_x--);
 
     let temp_y;
     for (temp_y = Math.floor(this.y); temp_y % 50 != 0; temp_y--);
 
+    ctx.fillStyle = "#201a24";
+    ctx.fillRect(0, 0, engine.width(), engine.height());
+
+    ctx.strokeStyle = "#272030";
     for (let i = -15; i < 15; i++) {
-      for (let j = -10; j < 10; j++) {
+      for (let j = -10; j < 11; j++) {
         ctx.strokeRect(temp_x + i * 50 - engine.camera.x, temp_y + j * 50 - engine.camera.y, 50, 50);
       }
     }
 
     ctx.save();
+    ctx.fillStyle = "#f85060";
 
     const x = engine.mouse.x + engine.camera.x;
     const y = engine.mouse.y + engine.camera.y;

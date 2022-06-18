@@ -14,6 +14,10 @@ assets.downloadAll(() => {
   engine.init(ctx);
   engine.start();
 
+  engine.addEntity(new Enemy(0, -250));
+  engine.addEntity(new Enemy(-150, -250));
+  engine.addEntity(new Enemy(150, -250));
+
   // add player
   engine.addEntity(new HUD());
 });

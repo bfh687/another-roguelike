@@ -10,22 +10,8 @@ class Camera {
   }
 
   update() {
-    this.shake_duration -= engine.clockTick;
-    this.shake_cd -= engine.clockTick;
-
-    if (this.shake_duration > 0) {
-      this.x_offset = Math.random() * 5 - 2.5;
-      this.y_offset = Math.random() * 5 - 2.5;
-    } else {
-      this.x_offset = this.y_offset = 0;
-    }
-
-    // smooth camera if not currently screenshaking
-    if (this.x_offset == 0 && this.y_offset == 0) this.lerp();
-
-    // apply shake
-    this.x += this.x_offset;
-    this.y += this.y_offset;
+    this.lerp();
+    this.shake();
   }
 
   lerp() {
@@ -48,6 +34,22 @@ class Camera {
 
     this.x += velocity_x;
     this.y += velocity_y;
+  }
+
+  shake() {
+    this.shake_duration -= engine.clockTick;
+    this.shake_cd -= engine.clockTick;
+
+    if (this.shake_duration > 0) {
+      this.x_offset = Math.random() * 5 - 2.5;
+      this.y_offset = Math.random() * 5 - 2.5;
+    } else {
+      this.x_offset = this.y_offset = 0;
+    }
+
+    // apply shake
+    this.x += this.x_offset;
+    this.y += this.y_offset;
   }
 
   screenshake() {
