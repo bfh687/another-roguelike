@@ -75,6 +75,8 @@ class Player {
   }
 
   reload() {
+    if (engine.keys.r) this.reloading = true;
+
     if (!this.reloading) return;
     this.reload_time -= engine.clockTick;
 
@@ -90,7 +92,7 @@ class Player {
   }
 
   canShoot() {
-    if (this.shot_cd > 0 || this.bullets == 0 || !engine.click) return false;
+    if (this.shot_cd > 0 || this.bullets == 0 || !engine.click || this.reloading) return false;
     this.shot_cd = 0.33 * this.fire_rate;
     return true;
   }
