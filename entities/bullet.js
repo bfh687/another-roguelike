@@ -5,8 +5,8 @@ class Bullet {
     this.x = engine.player.x;
     this.y = engine.player.y;
 
-    this.speed = 1500;
-    this.lifetime = 0.5;
+    this.speed = 2000;
+    this.lifetime = 0.25;
   }
 
   update() {
@@ -22,7 +22,7 @@ class Bullet {
   draw(ctx) {
     ctx.fillStyle = "white";
     ctx.beginPath();
-    ctx.arc(this.x - engine.camera.x, this.y - engine.camera.y, 7.5, 0, 2 * Math.PI);
+    ctx.arc(this.x - engine.camera.x, this.y - engine.camera.y, 5, 0, 2 * Math.PI);
     ctx.fill();
   }
 }

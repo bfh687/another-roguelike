@@ -14,7 +14,7 @@ class Player {
 
     // gun info (temp for now)
     {
-      this.bullets = 10;
+      this.bullets = 2;
       this.reloading = false;
       this.reload_time = 1;
     }
@@ -61,6 +61,8 @@ class Player {
     this.shot_cd -= engine.clockTick;
     if (!this.canShoot()) return;
 
+    engine.camera.screenshake();
+
     const x = engine.mouse.x + engine.camera.x;
     const y = engine.mouse.y + engine.camera.y;
 
@@ -72,6 +74,19 @@ class Player {
     this.bullets--;
     if (this.bullets == 0) this.reloading = true;
     engine.addEntity(new Bullet(-dir_x, -dir_y));
+
+    // add extra pellets ??
+    const angle = Math.atan2(-dir_y, -dir_x);
+    const a1 = angle + Math.PI / 16;
+    const a2 = angle - Math.PI / 16;
+
+    const v1_x = Math.cos(a1);
+    const v1_y = Math.sin(a1);
+    const v2_x = Math.cos(a2);
+    const v2_y = Math.sin(a2);
+
+    engine.addEntity(new Bullet(v1_x, v1_y));
+    engine.addEntity(new Bullet(v2_x, v2_y));
   }
 
   reload() {
@@ -81,7 +96,7 @@ class Player {
     this.reload_time -= engine.clockTick;
 
     if (this.reload_time <= 0) {
-      this.bullets = 10;
+      this.bullets = 2;
       this.reloading = false;
       this.reload_time = 1;
     }

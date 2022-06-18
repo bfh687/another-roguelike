@@ -1,12 +1,31 @@
 class Camera {
-  constructor(game) {
-    this.game = game;
+  constructor() {
     this.x = engine.player.x - engine.width() / 2;
     this.y = engine.player.y - engine.height() / 2;
+
+    // camera shake variables
+    this.x_offset = this.y_offset = 0;
+    this.shake_duration = 0.05;
+    this.shake_cd = 0;
   }
 
   update() {
-    this.lerp();
+    this.shake_duration -= engine.clockTick;
+    this.shake_cd -= engine.clockTick;
+
+    if (this.shake_duration > 0) {
+      this.x_offset = Math.random() * 5 - 2.5;
+      this.y_offset = Math.random() * 5 - 2.5;
+    } else {
+      this.x_offset = this.y_offset = 0;
+    }
+
+    // smooth camera if not currently screenshaking
+    if (this.x_offset == 0 && this.y_offset == 0) this.lerp();
+
+    // apply shake
+    this.x += this.x_offset;
+    this.y += this.y_offset;
   }
 
   lerp() {
@@ -29,6 +48,13 @@ class Camera {
 
     this.x += velocity_x;
     this.y += velocity_y;
+  }
+
+  screenshake() {
+    if (this.shake_duration < 0 && this.shake_cd < 0) {
+      this.shake_duration = 0.05;
+      this.shake_cd = 0.2;
+    }
   }
 
   draw(ctx) {}
