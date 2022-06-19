@@ -10,6 +10,7 @@ class HUD {
     this.drawBulletInfo(ctx);
     this.drawCrosshair(ctx);
     this.drawFPS(ctx);
+    this.drawXP(ctx);
   }
 
   drawBulletInfo(ctx) {
@@ -17,10 +18,15 @@ class HUD {
     const max_bullets = 32;
 
     ctx.font = "30px Arial";
-    const text = (bullets <= 10 ? "0" : "") + bullets + " / " + (bullets <= 10 ? "0" : "") + max_bullets;
+    const text = (bullets < 10 ? "0" : "") + bullets + " / " + (max_bullets < 10 ? "0" : "") + max_bullets;
     ctx.fillText(text, 10, 30);
 
     ctx.fillRect(10, 40, ctx.measureText(text).width * ((1 - engine.player.reload_time) / 1), 10);
+    ctx.save();
+    ctx.strokeStyle = "#546b5b";
+    ctx.lineWidth = 2;
+    ctx.strokeRect(10, 40, ctx.measureText(text).width, 10);
+    ctx.restore();
   }
 
   drawCrosshair(ctx) {
@@ -36,5 +42,11 @@ class HUD {
     this.avg_fps += fps;
     this.avg_sample_ct++;
     ctx.fillText("AVG: " + Math.floor(this.avg_fps / this.avg_sample_ct), 117, 30);
+  }
+
+  drawXP(ctx) {
+    ctx.font = "14px Arial";
+    const text = "XP : " + engine.player.xp;
+    ctx.fillText(text, 10, 70);
   }
 }

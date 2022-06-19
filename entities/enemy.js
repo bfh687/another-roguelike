@@ -34,6 +34,7 @@ class Enemy {
     if (this.health <= 0) {
       // spawn new entity, then remove
       engine.entities.push(new Enemy(engine.player.x + (Math.random() - 0.5) * 500, engine.player.y + (Math.random() - 0.5) * 500));
+      engine.entities.push(new Orb(this.x, this.y, 100));
       this.remove = true;
     }
     this.damage_alpha = 1;

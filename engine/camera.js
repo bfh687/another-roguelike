@@ -6,7 +6,7 @@ class Camera {
     // camera shake variables
     this.x_offset = this.y_offset = 0;
     this.shake_duration = 0.05;
-    this.shake_cd = 0;
+    this.shake_amplitude = 5;
   }
 
   update() {
@@ -38,11 +38,10 @@ class Camera {
 
   shake() {
     this.shake_duration -= engine.clockTick;
-    this.shake_cd -= engine.clockTick;
 
     if (this.shake_duration > 0) {
-      this.x_offset = Math.random() * 5 - 2.5;
-      this.y_offset = Math.random() * 5 - 2.5;
+      this.x_offset = Math.random() * this.shake_amplitude - this.shake_amplitude / 2;
+      this.y_offset = Math.random() * this.shake_amplitude - this.shake_amplitude / 2;
     } else {
       this.x_offset = this.y_offset = 0;
     }
@@ -53,11 +52,21 @@ class Camera {
   }
 
   screenshake() {
-    if (this.shake_duration < 0 && this.shake_cd < 0) {
+    if (this.shake_duration < 0) {
       this.shake_duration = 0.05;
       this.shake_cd = 0.2;
     }
   }
 
-  draw(ctx) {}
+  draw(ctx) {
+    ctx.save();
+    ctx.fillStyle = "black";
+    ctx.globalAlpha = 0.15;
+    ctx.filter = "blur(20px)";
+    ctx.beginPath();
+    ctx.arc(engine.player.x - this.x, engine.player.y - this.y, engine.player.vision_radius, 0, 2 * Math.PI);
+    ctx.rect(engine.width() + 40, -20, -(engine.width() + 40), engine.height() + 40);
+    ctx.fill();
+    ctx.restore();
+  }
 }

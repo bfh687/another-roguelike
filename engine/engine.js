@@ -30,7 +30,9 @@ class GameEngine {
     };
     this.startInput();
     this.timer = new Timer();
-    this.camera = new Camera(this);
+
+    this.camera = new Camera();
+    this.hud = new HUD();
   }
 
   start() {
@@ -134,6 +136,8 @@ class GameEngine {
 
     this.camera.update();
     this.camera.draw(this.ctx);
+
+    this.hud.draw(this.ctx);
   }
 
   width() {

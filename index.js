@@ -8,16 +8,14 @@ assets.downloadAll(() => {
   const ctx = canvas.getContext("2d");
   ctx.imageSmoothingEnabled = false;
 
-  // initialize and start engine
   engine.addEntity(new Player(engine.width() / 2, engine.height() / 2, 40, 40));
 
+  // initialize and start engine
   engine.init(ctx);
   engine.start();
 
+  // add test entities
   engine.addEntity(new Enemy(0, -250));
   engine.addEntity(new Enemy(-150, -250));
   engine.addEntity(new Enemy(150, -250));
-
-  // add player
-  engine.addEntity(new HUD());
 });

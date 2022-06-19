@@ -4,6 +4,9 @@ class Player {
 
     this.bb = new BoundingBox(x, y, width, height);
 
+    this.vision_radius = 250;
+    this.xp = 0;
+
     // movement stats
     this.velocity = { x: 0, y: 0 };
     this.speed = 350;
@@ -18,7 +21,7 @@ class Player {
     {
       this.bullets = 32;
       this.reloading = false;
-      this.reload_time = 0.5;
+      this.reload_time = 1;
     }
 
     engine.player = this;
