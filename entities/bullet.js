@@ -5,26 +5,27 @@ class Bullet {
     this.x = engine.player.x;
     this.y = engine.player.y;
 
-    this.bb = new BoundingBox(this.x, this.y, 5, 5);
-
-    this.speed = 2000;
+    this.speed = 3000;
     this.lifetime = 0.25;
     this.damage = 10;
   }
 
   update() {
+    const oldX = this.x;
+    const oldY = this.y;
+
+    const newX = oldX + this.speed * this.dir_x * engine.clockTick;
+    const newY = oldY + this.speed * this.dir_y * engine.clockTick;
+
     // update bullet position
     this.x += this.speed * this.dir_x * engine.clockTick;
     this.y += this.speed * this.dir_y * engine.clockTick;
-
-    // update bounding box
-    this.bb = new BoundingBox(this.x, this.y, 5, 5);
 
     // check for collisions
     engine.entities
       .filter((entity) => entity instanceof Enemy)
       .forEach((entity) => {
-        if (this.bb.collide(entity.bb)) {
+        if (entity.bb.collideLine(oldX, oldY, newX, newY)) {
           entity.damage(this.damage);
           this.remove = true;
         }
@@ -38,7 +39,7 @@ class Bullet {
   draw(ctx) {
     ctx.fillStyle = "white";
     ctx.beginPath();
-    ctx.arc(this.x - engine.camera.x, this.y - engine.camera.y, 5, 0, 2 * Math.PI);
+    ctx.arc(this.x - engine.camera.x, this.y - engine.camera.y, 4, 0, 2 * Math.PI);
     ctx.fill();
   }
 }

@@ -7,46 +7,38 @@ class HUD {
 
   draw(ctx) {
     ctx.fillStyle = "#546b5b";
-    this.drawBulletInfo(ctx);
     this.drawCrosshair(ctx);
-    this.drawFPS(ctx);
-    this.drawXP(ctx);
-  }
-
-  drawBulletInfo(ctx) {
-    const bullets = engine.player.bullets;
-    const max_bullets = 32;
-
-    ctx.font = "30px Arial";
-    const text = (bullets < 10 ? "0" : "") + bullets + " / " + (max_bullets < 10 ? "0" : "") + max_bullets;
-    ctx.fillText(text, 10, 30);
-
-    ctx.fillRect(10, 40, ctx.measureText(text).width * ((1 - engine.player.reload_time) / 1), 10);
-    ctx.save();
-    ctx.strokeStyle = "#546b5b";
-    ctx.lineWidth = 2;
-    ctx.strokeRect(10, 40, ctx.measureText(text).width, 10);
-    ctx.restore();
+    this.drawInfo(ctx);
   }
 
   drawCrosshair(ctx) {
-    ctx.drawImage(assets.getAsset("./sprites/crosshair.png"), 0, 0, 128, 128, engine.mouse.x - 32, engine.mouse.y - 32, 64, 64);
+    ctx.drawImage(
+      assets.getAsset("./sprites/hud/crosshair.png"),
+      0,
+      0,
+      128,
+      128,
+      engine.mouse.x - 32,
+      engine.mouse.y - 32,
+      64,
+      64
+    );
   }
 
-  drawFPS(ctx) {
+  drawInfo(ctx) {
+    if (!engine.debug) {
+      return;
+    }
+
+    // fps
     ctx.font = "15px Arial";
     const fps = Math.floor(1 / engine.clockTick);
-    ctx.fillText(fps + " FPS", 115, 20);
+    ctx.fillText(fps + " FPS", 10, 20);
 
+    // avg fps
     ctx.font = "10px Arial";
     this.avg_fps += fps;
     this.avg_sample_ct++;
-    ctx.fillText("AVG: " + Math.floor(this.avg_fps / this.avg_sample_ct), 117, 30);
-  }
-
-  drawXP(ctx) {
-    ctx.font = "14px Arial";
-    const text = "XP : " + engine.player.xp;
-    ctx.fillText(text, 10, 70);
+    ctx.fillText("AVG: " + Math.floor(this.avg_fps / this.avg_sample_ct), 10, 32);
   }
 }

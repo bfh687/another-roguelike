@@ -66,7 +66,10 @@ class GameEngine {
     };
 
     const lockChangeAlert = () => {
-      if (document.pointerLockElement === this.ctx.canvas || document.mozPointerLockElement === this.ctx.canvas) {
+      if (
+        document.pointerLockElement === this.ctx.canvas ||
+        document.mozPointerLockElement === this.ctx.canvas
+      ) {
         document.addEventListener("mousemove", updatePosition, false);
         this.locked = true;
       } else {
@@ -80,25 +83,47 @@ class GameEngine {
     document.addEventListener("mozpointerlockchange", lockChangeAlert, false);
 
     const updatePosition = (e) => {
-      this.mouse.x = Math.min(Math.max(0 + 5, (this.mouse.x += e.movementX)), this.ctx.canvas.width - 5);
-      this.mouse.y = Math.min(Math.max(0 + 5, (this.mouse.y += e.movementY)), this.ctx.canvas.height - 5);
+      this.mouse.x = Math.min(
+        Math.max(0 + 5, (this.mouse.x += e.movementX)),
+        this.ctx.canvas.width - 5
+      );
+      this.mouse.y = Math.min(
+        Math.max(0 + 5, (this.mouse.y += e.movementY)),
+        this.ctx.canvas.height - 5
+      );
     };
 
     window.addEventListener("keydown", (e) => {
       if (e.key == " " || e.key == "Tab") e.preventDefault();
-      this.keys[e.key] = true;
+      const key = e.key.toLowerCase();
+      this.keys[key] = true;
+      if (key == "t") {
+        this.debug = !this.debug;
+      }
     });
 
     window.addEventListener("keyup", (e) => {
-      this.keys[e.key] = false;
+      this.keys[e.key.toLowerCase()] = false;
     });
 
     this.ctx.canvas.addEventListener("mousedown", (e) => {
       this.click = true;
+
+      if (e.button === 0) {
+        this.leftClick = true;
+      } else if (e.button === 2) {
+        this.rightClick = true;
+      }
     });
 
     this.ctx.canvas.addEventListener("mouseup", (e) => {
       this.click = false;
+
+      if (e.button === 0) {
+        this.leftClick = false;
+      } else if (e.button === 2) {
+        this.rightClick = false;
+      }
     });
 
     this.mouse.x = this.ctx.canvas.width / 2;

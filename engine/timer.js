@@ -11,9 +11,7 @@ class Timer {
     this.lastTimestamp = current;
 
     const gameDelta = Math.min(delta, this.maxStep);
-    if (engine.knight && engine.knight.state != 4) {
-      this.gameTime += gameDelta;
-    }
+    this.gameTime += gameDelta;
     return gameDelta;
   }
 

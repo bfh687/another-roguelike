@@ -1,5 +1,26 @@
 /** Easy access to math functions */
-const { pow, ceil, floor, round, log, log2: lg, max, min, random, sqrt, abs, PI, E, sin, cos, tan, asin, acos, atan, atan2 } = Math;
+const {
+  pow,
+  ceil,
+  floor,
+  round,
+  log,
+  log2: lg,
+  max,
+  min,
+  random,
+  sqrt,
+  abs,
+  PI,
+  E,
+  sin,
+  cos,
+  tan,
+  asin,
+  acos,
+  atan,
+  atan2,
+} = Math;
 
 /** Easy access to logging :) (Python syntax XD) */
 const { log: print } = console;
@@ -34,25 +55,6 @@ const rgba = (r, g, b, a) => `rgba(${r}, ${g}, ${b}, ${a})`;
  * @returns String that can be used as a hsl web color
  */
 const hsl = (h, s, l) => `hsl(${h}, ${s}, ${l})`;
-
-/** Creates an alias for requestAnimationFrame for backwards compatibility */
-window.requestAnimFrame = (() => {
-  return (
-    window.requestAnimationFrame ||
-    window.webkitRequestAnimationFrame ||
-    window.mozRequestAnimationFrame ||
-    window.oRequestAnimationFrame ||
-    window.msRequestAnimationFrame ||
-    /**
-     * Compatibility for requesting animation frames in older browsers
-     * @param {Function} callback Function
-     * @param {DOM} element DOM ELEMENT
-     */
-    ((callback, element) => {
-      window.setTimeout(callback, 1000 / 60);
-    })
-  );
-})();
 
 /**
  * Random Integer between two numbers inclusively
@@ -97,3 +99,22 @@ const getDistance = (x1, y1, x2, y2) => {
  * @returns Returns random element from array. Null if empty
  */
 const chooseRandom = (items) => (items.length > 0 ? items[floor(random() * items.length)] : null);
+
+/** Creates an alias for requestAnimationFrame for backwards compatibility */
+window.requestAnimFrame = (() => {
+  return (
+    window.requestAnimationFrame ||
+    window.webkitRequestAnimationFrame ||
+    window.mozRequestAnimationFrame ||
+    window.oRequestAnimationFrame ||
+    window.msRequestAnimationFrame ||
+    /**
+     * Compatibility for requesting animation frames in older browsers
+     * @param {Function} callback Function
+     * @param {DOM} element DOM ELEMENT
+     */
+    ((callback, element) => {
+      window.setTimeout(callback, 1000 / 60);
+    })
+  );
+})();

@@ -3,7 +3,7 @@ class Enemy {
     Object.assign(this, { x, y });
     this.bb = new BoundingBox(x, y, 35, 35);
     this.speed = 200;
-    this.health = 100;
+    this.health = 50;
 
     // damage info
     {
@@ -33,7 +33,12 @@ class Enemy {
     this.health -= dmg;
     if (this.health <= 0) {
       // spawn new entity, then remove
-      engine.entities.push(new Enemy(engine.player.x + (Math.random() - 0.5) * 500, engine.player.y + (Math.random() - 0.5) * 500));
+      engine.entities.push(
+        new Enemy(
+          engine.player.x + (Math.random() - 0.5) * 500,
+          engine.player.y + (Math.random() - 0.5) * 500
+        )
+      );
       engine.entities.push(new Orb(this.x, this.y, 100));
       this.remove = true;
     }
@@ -43,13 +48,15 @@ class Enemy {
   draw(ctx) {
     ctx.save();
     ctx.fillStyle = "#3d5555";
-    ctx.fillRect(this.x - engine.camera.x - 17.5, this.y - engine.camera.y - 17.5, 35, 35);
-    ctx.restore();
+    ctx.fillRect(this.x - engine.camera.x, this.y - engine.camera.y, 35, 35);
 
-    ctx.save();
     ctx.globalAlpha = this.damage_alpha;
     ctx.fillStyle = "white";
-    ctx.fillRect(this.x - engine.camera.x - 17.5, this.y - engine.camera.y - 17.5, 35, 35);
+    ctx.fillRect(this.x - engine.camera.x, this.y - engine.camera.y, 35, 35);
     ctx.restore();
+
+    if (engine.debug) {
+      drawBoundingBox(this.bb, ctx, "blue");
+    }
   }
 }
